@@ -1,0 +1,95 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-key-pv
+  labels:
+    type: local
+spec:
+  storageClassName: postgres-storage
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/keycloak/postgres"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: postgres-keycloak-claim
+spec:
+  storageClassName: postgres-storage
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100M
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgressvc
+  labels:
+    app: postgres
+    name: postgres
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5432
+  externalIPs:
+    - 10.20.0.170
+  selector:
+    app: postgres
+    name: postgres
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    name: postgres
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      name: postgres
+      labels:
+        app: postgres
+        name: postgres
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: postgres
+        image: index.docker.io/proxymicros/angular:mypostgres
+        ports:
+         - containerPort: 5432
+        env:
+          - name: POSTGRES_DATABASE
+            value: keycloak-db
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            value: "new"
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-db
+      volumes:
+      - name: postgres-db 
+        persistentVolumeClaim:
+          claimName: postgres-keycloak-claim
+
+      imagePullSecrets:
+        - name: myregistrykey

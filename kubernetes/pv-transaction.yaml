@@ -1,0 +1,32 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: transaction-postgres-pv
+  labels:
+    type: local
+spec:
+  storageClassName: transaction-postgres-storage
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/transaction"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: transaction-postgres-pv-claim
+spec:
+  storageClassName: transaction-postgres-storage
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100M
+
+---
+
+

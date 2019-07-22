@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+    </f:facet>
+    <title>PrimeFaces Paradise</title>
+</h:head>
+
+<h:body styleClass="login-body">
+    <h:form action="/login" prependId="false">
+
+        <p:spacer height="35px"/>
+
+        <header class="login-header" style="background-color: transparent">
+
+        </header>
+        <p:spacer height="10px"/>
+        <div class="login-panel ui-fluid">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <center><h1>Connexion</h1></center>
+                    <!--<p:outputLabel for="username" value="Username" />-->
+                    <div class="input-wrapper">
+                        <p:inputText id="username" placeholder="Votre Identifiant" autocomplete="false"/>
+                        <i class="fa fa-user"/>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <!--<p:outputLabel for="password" value="Password" />-->
+                    <div class="input-wrapper">
+                        <p:password id="password" placeholder="Votre mot de passe" feedback="false"
+                                    autocomplete="false"/>
+                        <i class="fa fa-lock"/>
+                    </div>
+                </div>
+                <!--                <div class="ui-g-12 chkbox-container">
+                                    <div class="ui-g-6 ui-md-6">
+                                        <h:outputLink value="#">
+                                            Forgot password?
+                                        </h:outputLink>
+                                    </div>
+                                    <div class="ui-g-6 rememberme-container">
+                                        <p:outputLabel for="remember-me" value="Remember Me"/>
+                                        <p:selectBooleanCheckbox id="remember-me" />
+                                    </div>
+
+                                </div>-->
+                <div class="ui-g-12 button-container">
+                    <!--<p:button value="Sign In" styleClass="blue-btn raised-btn"/>-->
+                    <p:commandButton id="submit" icon="fa fa-sign-in" value="Connexion" ajax="false"
+                                     class="blue-btn raised-btn"/>
+                </div>
+                <div class="ui-g-12">
+                    <center><p:outputLabel
+                            style="margin-top: -20px; font-size: large; color: rgba(255, 0, 0, 0.64);"
+                            value="Échec de la connexion: l'utilisateur et / ou le mot de passe sont incorrects."
+                            rendered="${!empty param['error']}"/></center>
+                </div>
+                <h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css" library="paradise-layout"/>
+            </div>
+        </div>
+    </h:form>
+</h:body>
+
+</html>

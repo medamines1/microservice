@@ -1,0 +1,56 @@
+.border-primary {
+    border-color: skyblue !important;
+}
+
+.colorSBlue{
+    color: #fff;
+    background-color: #0eabea;
+    border-color: #0eabea;
+   
+}
+
+.colorBlue{
+    color: #fff;
+    background-color: #23d5fdde;
+    border-color: #23d5fdde;
+
+}
+.CenterButton{
+    width: 100px;
+    margin: 10px;
+    position:relative;
+    left:50%;
+}
+
+
+:host ::ng-deep .ng-pristine {
+    border-color: skyblue !important;
+    font-family: fantasy;
+}
+
+
+:host ::ng-deep .ng2-smart-action{
+    color: #027daf !important;
+    font-family: fantasy;
+}
+
+
+
+
+:host ::ng-deep  a.ng2-smart-action.ng2-smart-action-delete-delete {
+    display: none !important;
+}
+
+:host ::ng-deep tr.ng2-smart-row.selected {
+    background: #c9e4ef !important;
+}
+
+
+:host ::ng-deep input.form-control{
+    height: 50%!important;
+
+}
+
+::ng-deep .ng2-smart-action-add-add {
+    display: none;
+    }

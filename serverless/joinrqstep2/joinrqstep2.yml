@@ -1,0 +1,11 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://10.20.0.170:31113
+functions:
+  joinrqstep2:
+    lang: java8
+    handler: ./joinrqstep2
+    image: proxymicros/angular:joinrqstep2
+    secrets:
+      - dockerhub

@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/layouts/template.xhtml">
+    <ui:define name="title">User BO Management</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form" prependId="false">
+            <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+            <p:spacer height="30px;"/>
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+
+
+            <p:panel id="basic" header="User Details">
+                <p:panelGrid columns="4"
+                             columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                             layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:outputLabel value="ID: " style="font-weight:bold;"/>
+                    <p:outputLabel value="#{addUserBoController.userForm.id}"/>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <p:outputLabel value="Username: " style="font-weight:bold;"/>
+                    <p:inputText value="#{addUserBoController.userForm.userName}"
+                                 disabled="#{addUserBoController.disableEdit}"/>
+                    <p:outputLabel value="FirstName: " style="font-weight:bold;"/>
+                    <p:inputText value="#{addUserBoController.userForm.firstName}"
+                                 disabled="#{addUserBoController.disableEdit}"/>
+                    <p:outputLabel value="LastName: " style="font-weight:bold;"/>
+                    <p:inputText value="#{addUserBoController.userForm.lastName}"
+                                 disabled="#{addUserBoController.disableEdit}"/>
+                    <p:outputLabel value="E-Mail: " style="font-weight:bold;"/>
+                    <p:inputText value="#{addUserBoController.userForm.email}"
+                                 disabled="#{addUserBoController.disableEdit}"/>
+                    <p:outputLabel value="Status: " style="font-weight:bold;"/>
+                    <p:selectBooleanCheckbox value="#{addUserBoController.userForm.enabled}"
+                                             disabled="#{addUserBoController.disableEdit}"
+                                             itemLabel="Active"/>
+                    <p:outputLabel value="Last connected: " style="font-weight:bold;"/>
+                    <p:inputText value="#{addUserBoController.userForm.lastConnected}" disabled="true">
+                        <f:convertDateTime type="date" pattern="dd-MM-yyyy hh.mm.ss aa"/>
+                    </p:inputText>
+                </p:panelGrid>
+                <p:separator/>
+                <p:panelGrid columns="6" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid"
+                             styleClass="ui-panelgrid-blank">
+                    <h:outputText value="Roles: *" style="font-weight:bold;"/>
+                    <p:selectCheckboxMenu id="menu" value="#{addUserBoController.selectedRoles}"
+                                          label="Roles" filter="true" filterMatchMode="startsWith"
+                                          panelStyle="width:300px" rendered="#{! addUserBoController.disableEdit}">
+                        <f:selectItems value="#{addUserBoController.roles}" var="role"
+                                       itemLabel="#{role.designation}" itemValue="#{role.name}"/>
+                    </p:selectCheckboxMenu>
+
+                    <p:panelGrid columns="4" rendered="#{addUserBoController.disableEdit}">
+                        <c:forEach var="item" items="#{addUserBoController.selectedRoles}">
+                            <h:outputText value="#{item}"
+                                          style="background-color: #7e8dcd ; border: 2px solid;  border-radius: 8px; padding: 3px; color: white; margin-right: 1px"/>
+                        </c:forEach>
+                    </p:panelGrid>
+
+                </p:panelGrid>
+                <p:separator/>
+                <div style="text-align:center">
+                    <p:commandButton value="Edit" id="editbtn" icon="fa fa-edit"
+                                     actionListener="#{addUserBoController.activeEdit}"
+                                     update=":form:basic"/>
+
+                    <p:commandButton value="Save" id="savebtn" style="margin-left:20px" icon="fa fa-save"
+                                     rendered="#{! addUserBoController.disableEdit}"
+                                     actionListener="#{addUserBoController.saveUser}"
+                                     onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()">
+                        <p:confirm header="Confirmation" message="Are you sure?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Cancel" id="cancelbtn" style="margin-left:20px" icon="fa fa-remove"
+                                     rendered="#{! addUserBoController.disableEdit}"
+                                     actionListener="#{addUserBoController.redirectToRoleManagementPage}">
+                        <p:confirm header="Confirmation" message="Are you sure?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+
+                </div>
+            </p:panel>
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false"
+                      showHeader="false">
+                <p:graphicImage name="images/ajaxloadingbar.gif"/>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+            </p:confirmDialog>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>

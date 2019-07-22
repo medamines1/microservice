@@ -1,0 +1,39 @@
+
+:host ::ng-deep .ng2-smart-action{
+    color: #000000 !important;
+    font-family: fantasy;
+}
+
+
+:host ::ng-deep  span.menu-title{
+    color: red!important;
+}
+
+
+
+:host ::ng-deep  a.ng2-smart-action.ng2-smart-action-delete-delete {
+    display: none!important;
+}
+
+
+:host ::ng-deep .ng-pristine {
+    border-color: skyblue !important;
+    font-family: fantasy;
+}
+
+
+
+:host ::ng-deep  a.ng2-smart-sort-link.sort{
+    color: skyblue;
+}
+
+
+
+:host ::ng-deep input.form-control.ng-pristine.ng-valid{
+    height: 40%;
+}
+
+
+:host ::ng-deep a.ng2-smart-action.ng2-smart-action-add-add {
+    color: skyblue!important;
+}

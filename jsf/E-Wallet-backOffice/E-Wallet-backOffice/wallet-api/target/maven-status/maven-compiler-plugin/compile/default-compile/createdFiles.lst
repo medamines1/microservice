@@ -1,0 +1,14 @@
+com/proxym/api/controller/LoginController.class
+com/proxym/api/controller/configuration/GuestPreferences.class
+com/proxym/api/ManagedBean/EditInputValidator.class
+com/proxym/api/UserInfoThread.class
+com/proxym/api/ManagedBean/AddInputValidator.class
+com/proxym/api/ManagedBean/DecodeBase64.class
+com/proxym/api/SuccessAuthHandler.class
+com/proxym/api/WalletBackOfficeApplication.class
+com/proxym/api/SystemInfoLocalThreadHolder.class
+com/proxym/api/SecurityConfig.class
+exception/AccessDeniedException.class
+com/proxym/api/Utils.class
+com/proxym/api/SpringMvcConfiguration.class
+com/proxym/api/BoApplicationAttributes.class

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cashinout-microservice-dep
+spec:
+  selector:
+      matchLabels:
+        app: cashinout-microservice-dep
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cashinout-microservice-dep
+    spec:
+      containers:
+        - name: mymysql
+          image: index.docker.io/proxymicros/angular:mymysql
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3306
+          env:
+            - name  : USER
+              value : root
+            - name  : MYSQL_PORT
+              value : "3306"
+            - name  : MYSQL_ROOT_PASSWORD
+              value : new
+            - name  : MYSQL_DATABASE
+              value : mydatabase 
+        - name: cashinout-microservice-dep
+          image: proxymicros/angular:cashinout_microservice
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9092
+          env:
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: new
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:mysql://localhost:3306/mydatabase
+          - name: SPRING_DATASOURCE_USERNAME
+            value: root
+      imagePullSecrets:
+        - name: myregistrykey
+

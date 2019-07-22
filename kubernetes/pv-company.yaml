@@ -1,0 +1,32 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: company-postgres-pv
+  labels:
+    type: local
+spec:
+  storageClassName: company-postgres-storage
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/company"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: company-postgres-pv-claim
+spec:
+  storageClassName: company-postgres-storage
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100M
+
+---
+
+

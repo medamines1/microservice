@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layouts/template.xhtml">
+    <ui:define name="title">Role Acces Management</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6 ui-lg-12">
+                    <div class="card card-w-title">
+                        <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+
+                        <input type="hidden" name="${_csrf.parameterName}"
+                               value="${_csrf.token}"/>
+                        <h1>
+                            <h:outputText value="#{roleAccessManagementController.name}"/>
+                            Access Management
+                        </h1>
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                <p:tree
+                                        value="#{roleAccessManagementController.featuresTreeNodeL}"
+                                        var="feature" selectionMode="checkbox"
+                                        selection="#{roleAccessManagementController.selectedFeaturesL}">
+                                    <p:treeNode>
+                                        <h:outputText value="#{feature.name}"/>
+                                    </p:treeNode>
+
+                                    <p:treeNode type="n2">
+                                        <h:outputText value="#{feature.name}"/>
+                                    </p:treeNode>
+
+                                    <p:treeNode type="n3">
+                                        <h:outputText value="#{feature.name}"/>
+                                    </p:treeNode>
+
+                                </p:tree>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                <p:tree
+                                        value="#{roleAccessManagementController.featuresTreeNodeR}"
+                                        var="feature" selectionMode="checkbox"
+                                        selection="#{roleAccessManagementController.selectedFeaturesR}">
+                                    <p:treeNode>
+                                        <h:outputText value="#{feature.name}"/>
+                                    </p:treeNode>
+
+                                    <p:treeNode type="n2">
+                                        <h:outputText value="#{feature.name}"/>
+                                    </p:treeNode>
+
+                                    <p:treeNode type="n3">
+                                        <h:outputText value="#{feature.name}"/>
+                                    </p:treeNode>
+                                </p:tree>
+                            </div>
+
+                        </div>
+                        <center>
+                            <p:commandButton
+                                    actionListener="#{roleAccessManagementController.save}"
+                                    id="save" onstart="PF('statusDialog').show()"
+                                    onsuccess="PF('statusDialog').hide()" update=":form:msgs"
+                                    icon="fa fa-fw fa-floppy-o" value="Save"
+                                    style="width: 100px; margin-top: 20px; margin-right: 20px;"/>
+
+                            <p:commandButton
+                                    actionListener="#{roleAccessManagementController.reset()}"
+                                    id="reset" update=":form"
+                                    onstart="PF('statusDialog').show()"
+                                    onsuccess="PF('statusDialog').hide()" icon="fa fa-fw fa-eraser"
+                                    value="Reset" style="width: 100px; margin-top: 20px; margin-right: 20px;"/>
+
+                            <p:commandButton
+                                    actionListener="#{roleAccessManagementController.cancel()}"
+                                    id="cancel" update=":form"
+                                    onstart="PF('statusDialog').show()"
+                                    onsuccess="PF('statusDialog').hide()" icon="fa fa-fw fa-times"
+                                    value="Cancel" style="width: 100px; margin-top: 20px;"/>
+                        </center>
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                                  closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage name="images/ajaxloadingbar.gif"/>
+                        </p:dialog>
+
+                    </div>
+                </div>
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

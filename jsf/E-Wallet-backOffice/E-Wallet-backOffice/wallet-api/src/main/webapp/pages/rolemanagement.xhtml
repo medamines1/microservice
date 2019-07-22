@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/layouts/template.xhtml">
+    <ui:define name="title">User BO Management</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form" prependId="false">
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+            <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <c:if test="#{permissions.isFeaturePermitted('CNT212')}">
+                            <p:commandButton value="Add New Configuration" id="addR"
+                                             update=":form:addR :form:addDialog"
+                                             oncomplete="PF('addDialog').show()"
+                                             icon="fa fa-fw fa-plus-square-o">
+                                <f:setPropertyActionListener
+                                        value="#{roleManagementController.newRole}"
+                                        target="#{roleManagementController.role}"/>
+                                <f:setPropertyActionListener value="add" target="#{roleManagementController.action}"/>
+                            </p:commandButton>
+                        </c:if>
+                        <p:dataTable id="roleTable" var="role" widgetVar="roleTableVar"
+                                     value="#{roleManagementController.roles}" editable="true"
+                                     style="margin-top:20px" rows="10" paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15,50,100"
+                                     filteredValue="#{roleManagementController.froles}">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Search all fields:"/>
+                                    <p:inputText id="globalFilter"  onkeyup="PF('roleTableVar').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column headerText="Name" filterBy="#{role.name}"
+                                      filterMatchMode="contains" filterStyle="display:none">
+                                <h:outputText value="#{role.name}"/>
+                            </p:column>
+
+                            <p:column headerText="Designation" filterBy="#{role.designation}"
+                                      filterMatchMode="contains" filterStyle="display:none">
+                                <h:outputText value="#{role.designation}"/>
+                            </p:column>panelGrid
+                            <c:if
+                                    test="#{permissions.conditions('CNT213','CNT214','CNT215')}">
+                                <p:column headerText="Action" style="width:200px;">
+                                    <!--<p:panelGrid columns="3" styleClass="panelGrid">-->
+
+                                        <c:if test="#{permissions.isFeaturePermitted('CNT215')}">
+                                            <p:commandButton title="Update Role" id="addRole"
+                                                             styleClass="green-btn"
+                                                             update=":form:addR :form:addDialog"
+                                                             oncomplete="PF('addDialog').show()"
+                                                             icon="fa fa-fw fa-pencil">
+                                                <f:setPropertyActionListener value="#{role}" target="#{roleManagementController.role}"/>
+                                                <f:setPropertyActionListener value="update"   target="#{roleManagementController.action}"/>
+                                            </p:commandButton>
+                                        </c:if>
+                                        <c:if test="#{permissions.isFeaturePermitted('CNT214')}">
+                                            <p:commandButton
+                                                    actionListener="#{roleManagementController.delete(role)}"
+                                                    styleClass="red-btn"
+                                                    id="delete" update=":form:roleTable"
+                                                    icon="fa fa-fw fa-trash" title="Delete role"
+                                                    onstart="PF('statusDialog').show()"
+                                                    onsuccess="PF('statusDialog').hide()"
+                                                    rendered="#{permissions.isNotSuperAdmin(role.name)}">
+                                                <p:confirm header="Confirmation" message="Are you sure?"
+                                                           icon="ui-icon-alert"/>
+                                            </p:commandButton>
+                                        </c:if>
+                                        <c:if test="#{permissions.isFeaturePermitted('CNT213')}">
+
+                                            <p:commandButton
+                                                    actionListener="#{roleManagementController.editAccess(role.name)}"
+                                                    id="navigate" icon="fa fa-fw fa-key"
+                                                    title="Edit Access"
+                                                    rendered="#{permissions.isNotSuperAdmin(role.name)}">
+
+                                            </p:commandButton>
+                                        </c:if>
+                                    <!--</p:panelGrid>-->
+                                </p:column>
+                            </c:if>
+                        </p:dataTable>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="No" type="button"
+                                             styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog>
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                                  closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage name="images/ajaxloadingbar.gif"/>
+                        </p:dialog>
+
+
+                        <p:dialog id="addDialog"
+                                  header="#{roleManagementController.role.name eq null? 'Add New Role' : 'Update Role'}"
+                                  widgetVar="addDialog" modal="true" showEffect="fade"
+                                  hideEffect="fade" resizable="false" closable="true"
+                                  draggable="false" styleClass="addDialog">
+                            <h:panelGrid id="grid" columns="3" cellpadding="10">
+                                <h:outputLabel for="name" value="Role Name:"
+                                               style="font-weight:bold; margin-bottom:10px"/>
+                                <p:inputText id="name"
+                                             disabled="#{roleManagementController.action eq 'update'? true : false}"
+                                             value="#{roleManagementController.role.name}" label="Name"
+                                             style="margin-bottom:10px; width:480px"/>
+                                <p:message for="name" style="margin-bottom:10px"/>
+
+                                <h:outputLabel for="designation" value="Role Designation:"
+                                               style="font-weight:bold"/>
+                                <p:inputTextarea id="designation" style="width:480px"
+                                                 value="#{roleManagementController.role.designation}"
+                                                 label="Designation"/>
+                                <p:message for="designation"/>
+                            </h:panelGrid>
+                            <p:commandButton value="Save" id="add"
+                                             update=":form:roleTable :form:addDialog"
+                                             actionListener="#{roleManagementController.save}"
+                                             icon="fa fa-fw fa-floppy-o "
+                                             style="margin-right:10px; margin-top:20px; width: 100px;"
+                                             onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
+                            />
+
+                        </p:dialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

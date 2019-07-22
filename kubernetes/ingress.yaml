@@ -1,0 +1,21 @@
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: microservices.info
+    http:
+      paths:
+      - path: /api/
+        backend:
+          serviceName: zuul-service
+          servicePort: 8765
+      - path: /company/
+        backend:
+          serviceName: company-category-service
+          servicePort: 8100
+

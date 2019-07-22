@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/faas.iml" filepath="$PROJECT_DIR$/.idea/faas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/joinrq.iml" filepath="$PROJECT_DIR$/.idea/modules/joinrq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/joinrq.main.iml" filepath="$PROJECT_DIR$/.idea/modules/joinrq.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/joinrq.model.iml" filepath="$PROJECT_DIR$/.idea/modules/model/joinrq.model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/joinrq.model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/model/joinrq.model.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model/joinrq.model.test.iml" filepath="$PROJECT_DIR$/.idea/modules/model/joinrq.model.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/joinrq.test.iml" filepath="$PROJECT_DIR$/.idea/modules/joinrq.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model.iml" filepath="$PROJECT_DIR$/.idea/modules/model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/model.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/model.test.iml" filepath="$PROJECT_DIR$/.idea/modules/model.test.iml" />
+    </modules>
+  </component>
+</project>

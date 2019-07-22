@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-wallet-microservice
+spec:
+  selector:
+      matchLabels:
+        app: transaction-wallet-microservice
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: transaction-wallet-microservice
+    spec:
+      containers:
+        - name: mypostgres
+          image: index.docker.io/proxymicros/angular:mypostgres
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          env:
+            - name  :  POSTGRES_USER
+              value : postgres
+            - name  : POSTGRES_PASSWORD
+              value : new
+            - name : POSTGRES_DB
+              value : mydb
+          volumeMounts:
+             - mountPath: /var/lib/postgresql/data
+               name: transaction-postgres-pv-claim
+        - name: transaction-wallet-microservice
+          image: index.docker.io/proxymicros/angular:transaction_wallet
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8100
+          env:
+          - name: auth-server-url
+            value: "http://$(KEYCLOAK_SERVICE_HOST):$(KEYCLOAK_SERVICE_PORT)"
+          - name: keycloak-host
+            value: "http://$(KEYCLOAK_SERVICE_HOST):$(KEYCLOAK_SERVICE_PORT)"
+          - name: auth-port
+            value: "8081"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: new
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://localhost:5432/postgres?currentSchema=public
+          - name: SPRING_DATASOURCE_USERNAME
+            value: postgres
+      imagePullSecrets:
+        - name: myregistrykey
+      volumes:
+      - name: transaction-postgres-pv-claim
+        persistentVolumeClaim:
+          claimName: transaction-postgres-pv-claim

@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layouts/template.xhtml">
+
+    <ui:define name="title">Add User BO Management</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+            <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+            <p:panel id="basic" header="User Details" style="margin-bottom:20px; overflow: hidden;">
+                <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                             layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                    <h:outputText value="First Name: *" style="font-weight:bold;" required="true"/>
+                    <p:inputText value="#{addUserBoController.userForm.firstName}" autocomplete="off">
+                        <p:ajax event="blur" update="userName" listener="#{addUserBoController.handleKeyEvent}"/>
+                    </p:inputText>
+
+                    <h:outputText value="Last Name: *" style="font-weight:bold;"/>
+                    <p:inputText value="#{addUserBoController.userForm.lastName}" required="true" autocomplete="off">
+                        <p:ajax event="blur" update="userName" listener="#{addUserBoController.handleKeyEvent}"/>
+                    </p:inputText>
+
+                    <h:outputText value="E-Mail: *" style="font-weight:bold; "/>
+                    <p:inputText value="#{addUserBoController.userForm.email}" required="true" autocomplete="off">
+                        <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                    </p:inputText>
+
+
+                                                        <h:outputText value="Password: *" style="font-weight:bold;"/>
+                                                        <!--<h:inputSecret value="#{addUserBoController.customADPasswordGenerator() }" redisplay="false" />-->
+                                                        <p:inputText value="#{addUserBoController.userForm.password}" feedback="true" immediate="true" autocomplete="off"/>
+
+                    <h:outputText value="User Name: " style="font-weight:bold;"/>
+                    <p:inputText id="userName" value="#{addUserBoController.userForm.userName}" readonly="true"
+                                 disabled="true" autocomplete="off"/>
+
+                </p:panelGrid>
+                <p:panelGrid columns="4" columnClasses="ui-grid-col-2,ui-grid-col-8" layout="grid"
+                             styleClass="ui-panelgrid-blank">
+                    <h:outputText value="Role: *" style="font-weight:bold;"/>
+                    <p:selectManyCheckbox id="grid" value="#{addUserBoController.selectedRoles}" layout="responsive"
+                                          columns="3" required="true">
+                        <f:selectItems value="#{addUserBoController.roles}" var="role" itemLabel="#{role.designation}"
+                                       itemValue="#{role.name}"/>
+                    </p:selectManyCheckbox>
+                </p:panelGrid>
+
+                <p:spacer height="2px;"/>
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:commandButton
+                            actionListener="#{addUserBoController.saveUser()}"
+                            id="Bsave" update=":form "
+                            onstart="PF('statusDialog').show()"
+                            onsuccess="PF('statusDialog').hide()"
+                            icon="fa fa-fw fa-save" value="Save" title="Save"/>
+
+                    <p:commandButton
+                            id="Bcancel"
+                            update=":form" process="@this"
+                            icon="fa fa-fw fa-times" title="Reset" value="Reset">
+                        <p:resetInput target="form"/>
+                    </p:commandButton>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton value="No" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+            </p:confirmDialog>
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                      closable="false" resizable="false" showHeader="false">
+                <p:graphicImage name="images/ajaxloadingbar.gif"/>
+            </p:dialog>
+
+            <p:dialog widgetVar="errorDialog" modal="true" draggable="false"
+                      closable="true" resizable="false" showHeader="false">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="error-template">
+                                <h1>Oops!</h1>
+                                <h2>401 Access denied</h2>
+
+                                <div class="error-actions"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

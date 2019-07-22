@@ -1,0 +1,86 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: redis-key-pv
+  labels:
+    type: local
+spec:
+  storageClassName: redis-storage
+  capacity:
+    storage: 100M
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/functions/requests/mongo"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: redis
+  name: redis-claim
+spec:
+  storageClassName: redis-storage
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100M
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redissvc
+  labels:
+    app: redis
+    name: redis
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 6379
+  externalIPs:
+    - 10.20.0.170
+  selector:
+    app: redis
+    name: redis
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    name: redis
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      name: redis
+      labels:
+        app: redis
+        name: redis
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: redis
+        image: redis
+        ports:
+         - containerPort: 6379
+        volumeMounts:
+          - mountPath: /usr/local/etc/redis/
+            name: redis-db
+      volumes:
+      - name: redis-db 
+        persistentVolumeClaim:
+          claimName: redis-claim
+
+      imagePullSecrets:
+        - name: myregistrykey

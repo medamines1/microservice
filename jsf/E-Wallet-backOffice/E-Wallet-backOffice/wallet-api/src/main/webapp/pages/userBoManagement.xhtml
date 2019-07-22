@@ -1,0 +1,206 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/layouts/template.xhtml">
+
+    <ui:define name="title">User BO Management</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form" prependId="false">
+            <p:growl id="msgs" showDetail="true" autoUpdate="true"/>
+            <p:spacer height="30px;"/>
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <c:if test="#{permissions.isFeaturePermitted('CNT122')}">
+
+                            <p:commandButton id="navigate" value="Add Users"
+                                             actionListener="#{userBOManagementController.redirectToAddUserPage}"
+                                             title="Add Users" icon="fa fa-fw fa-plus-circle"
+                                             style="margin-bottom: 20px;"/>
+                        </c:if>
+                        <p:spacer height="30px;"/>
+                        <p:dataTable id="usersList" var="userRole"
+                                     value="#{userBOManagementController.usersRoles}"
+                                     widgetVar="usersTable" editable="true" style="margin-bottom:0"
+                                     filteredValue="#{userBOManagementController.filtredUsersRoles}"
+                                     paginator="true" rows="10"
+                                     paginatorTemplate="#{userBOManagementController.paginatorTemplate}"
+                                     rowsPerPageTemplate="5,10,15,50,100" rowKey="#{userRole.userName}"
+                                     selection="#{userBOManagementController.selectedUsersRoles}">
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Search "/>
+                                    <p:inputText id="globalFilter"
+                                                 onkeyup="PF('usersTable').filter()" style="width:200px"
+                                                 placeholder="Enter keyword" update="usersList"/>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column selectionMode="multiple" style="width:20px;text-align:center"
+                                      exportable="false"/>
+                            <p:column headerText="User-Name" sortBy="#{userRole.userName}"
+                                      filterBy="#{userRole.userName}" filterMatchMode="contains"
+                                      style="width:120px;">
+                                <h:outputText value="#{userRole.userName}"/>
+                            </p:column>
+                            <p:column headerText="First Name" style="width:110px; text-align:center"
+                                      sortBy="#{userRole.firstName}" filterBy="#{userRole.firstName}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{userRole.firstName}"/>
+                            </p:column>
+                            <p:column headerText="Last Name" style="width:105px; text-align:center"
+                                      sortBy="#{userRole.lastName}" filterBy="#{userRole.lastName}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{userRole.lastName}"/>
+                            </p:column>
+                            <p:column headerText="E-mail" style="width:140px; text-align:center"
+                                      sortBy="#{userRole.email}" filterBy="#{userRole.email}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{userRole.email}"/>
+                            </p:column>
+                            <p:column headerText="Role" style="width:140px; text-align:center"
+                                      filterBy="#{userRole.roleName}" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Roles" style="width:145px;text-align:center"
+                                                          onchange="PF('usersTable').filter()"
+                                                          panelStyle="width:245px" scrollHeight="150">
+                                        <f:selectItems value="#{userBOManagementController.roles}"
+                                                       var="role" itemLabel="#{role.name}"
+                                                       itemValue="#{role.name}"/>
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{userRole.roleName}"/>
+                            </p:column>
+                            <p:column headerText="Last Login" style="width:120px;text-align:center"
+                                      sortBy="#{userRole.lastConnected}" filterBy="#{userRole.lastConnected}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{userRole.lastConnected}">
+                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy hh.MM.ss aa"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Status" style="width:105px;text-align:center"
+                                      sortBy="#{userRole.enabled}" filterBy="#{userRole.enabled}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{userRole.enabled == true ? 'Active' :'Locked'}"/>
+                            </p:column>
+                            <c:if test="#{permissions.conditionOrCondition('CNT123','CNT124')}">
+                                <p:column id="actionCol" style="width:120px" headerText="Action" exportable="false">
+
+                                    <p:commandButton icon="fa fa-fw fa-envelope-o" title="Send message"
+                                                     update=":form:eMailDialog"
+                                                     oncomplete="PF('eMailDialog').show()"
+                                                     styleClass="green-btn">
+                                        <f:setPropertyActionListener value="#{userRole.userName}"
+                                                                     target="#{userBOManagementController.userRole.userName}"/>
+                                        <f:setPropertyActionListener value="#{userRole.email}"
+                                                                     target="#{userBOManagementController.userRole.email}"/>
+                                        <f:setPropertyActionListener value="#{userRole.email}"
+                                                                     target="#{userBOManagementController.mailModel.to}"/>
+                                    </p:commandButton>
+                                    <c:if test="#{permissions.isFeaturePermitted('CNT124')}">
+                                        <p:growl>
+
+                                        </p:growl>
+                                        <p:commandButton icon="fa fa-fw fa-lock" title="Lock this User"
+                                                         actionListener="#{userBOManagementController.lockUnLockUser(userRole)}"
+                                                         update=":form:usersList"
+                                                         onstart="PF('statusDialog').show()"
+                                                         onsuccess="PF('statusDialog').hide()"
+                                                         rendered="#{userRole.enabled eq true}"
+                                                         styleClass="red-btn">
+                                            <p:confirm header="Confirmation"
+                                                       message="Are you sure you want to lock : #{userRole.userName} ?"
+                                                       icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                        <p:commandButton icon="fa fa-fw fa-unlock"
+                                                         title="Are you sure you want to unLock : #{userRole.userName} ?"
+                                                         actionListener="#{userBOManagementController.lockUnLockUser(userRole)}"
+                                                         update=":form:usersList"
+                                                         onstart="PF('statusDialog').show()"
+                                                         onsuccess="PF('statusDialog').hide()"
+                                                         rendered="#{userRole.enabled eq false}">
+                                            <p:confirm header="Confirmation" message="Are you sure?"
+                                                       icon="ui-icon-alert"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton icon="fa fa-fw fa-info-circle" title="Detail"
+                                                         actionListener="#{userBOManagementController.redirectToUserDetailsPage(userRole)}"/>
+                                    </c:if>
+
+
+                                </p:column>
+                            </c:if>
+                        </p:dataTable>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="No" type="button"
+                                             styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog>
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                                  closable="false" resizable="false" showHeader="false">
+                            <p:graphicImage name="images/ajaxloadingbar.gif"/>
+                        </p:dialog>
+
+                        <p:dialog widgetVar="eMailDialog" id="eMailDialog" modal="true" draggable="false"
+                                  closable="true"
+                                  resizable="false" showHeader="true" header="Send Email">
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                                <h:outputText value="Username :" style="font-weight:bold;"/>
+                                <h:outputText id="sname" value="#{userBOManagementController.userRole.userName}"/>
+                                <h:outputText value="Email :" style="font-weight:bold;"/>
+                                <h:outputText id="email" value="#{userBOManagementController.userRole.email}"
+                                              label="E-mail"/>
+                                <h:outputText id="subject" value="Subject :" style="font-weight:bold;"/>
+                                <h:inputText value="#{userBOManagementController.mailModel.subject}"
+                                             style="width: 820px;"/>
+                                <!--<h:outputText value="Message :" style="font-weight:bold;"/>-->
+
+
+                            </p:panelGrid>
+                            <div style="text-align:center">
+                                <p:editor id="editor" widgetVar="editorWidget"
+                                          value="#{userBOManagementController.mailModel.text}"/>
+                                <!--<p:textEditor widgetVar="editor1" value="#{userBOManagementController.mailModel.text}" height="200" width="820" style="margin-bottom:10px"/>-->
+                            </div>
+
+
+                            <p:commandButton value="Send" id="editsaveDialog" update=":form:eMailDialog :form"
+                                             actionListener="#{userBOManagementController.sendMessage}"
+                                             icon="fa fa-fw fa-floppy-o" onstart="PF('statusDialog').show()"
+                                             onsuccess="PF('statusDialog').hide()">
+                                <p:confirm header="Confirmation"
+                                           message="Are you sure you want to send this message?"
+                                           icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
+                        </p:dialog>
+
+                        <p:dialog widgetVar="errorDialog" modal="true" draggable="false"
+                                  closable="true" resizable="false" showHeader="false">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="error-template">
+                                            <h1>Oops!</h1>
+                                            <h2>401 Access denied</h2>
+
+                                            <div class="error-actions"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p:dialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

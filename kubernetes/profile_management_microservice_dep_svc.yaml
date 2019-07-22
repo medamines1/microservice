@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ewallet-management-profil
+  labels:
+    run: ewallet-management-profil
+spec:
+  type: NodePort
+  ports:
+  - port: 8000
+  externalIPs:
+    - 10.20.0.170
+  selector:
+    app : management-profile-microservice
+---
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: management-profile-microservice
+spec:
+  selector:
+      matchLabels:
+        app: management-profile-microservice
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: management-profile-microservice
+    spec:
+      containers:
+        - name: mymysql
+          image: index.docker.io/proxymicros/angular:mymysql
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3306
+          env:
+            - name  : USER
+              value : root
+            - name  : MYSQL_PORT
+              value : "3306"
+            - name  : MYSQL_ROOT_PASSWORD
+              value : new
+            - name  : MYSQL_DATABASE
+              value : mydatabase 
+        - name: company-category-microservice
+          image: proxymicros/angular:profile_management_ewallet 
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+          - name: auth-server-url
+            value: "http://$(KEYCLOAK_SERVICE_HOST):$(KEYCLOAK_SERVICE_PORT)"
+          - name: keycloak-host
+            value: "http://$(KEYCLOAK_SERVICE_HOST):$(KEYCLOAK_SERVICE_PORT)"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: new
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:mysql://localhost:3306/mydatabase
+          - name: SPRING_DATASOURCE_USERNAME
+            value: root
+          - name: keycloak.auth-server-url
+            value: $(KEYCLOAK_)
+      imagePullSecrets:
+        - name: myregistrykey
+

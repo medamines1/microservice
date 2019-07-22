@@ -1,0 +1,77 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+    name: keycloak
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      nodePort: 30080
+  externalIPs: 
+    - 10.20.0.170
+  selector:
+    app: keycloak
+    name: keycloak
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    name: keycloak
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      name: keycloak
+      labels:
+        app: keycloak
+        name: keycloak
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: keycloak
+        image: jboss/keycloak:4.8.3.Final
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        env:
+          - name: KEYCLOAK_LOGLEVEL
+            value: "DEBUG"
+          - name: PROXY_ADDRESS_FORWARDING
+            value: "true"
+          - name: KEYCLOAK_USER
+            value: "admin"
+          - name: KEYCLOAK_PASSWORD
+            value: "password"
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            value: "new"
+          - name: POSTGRES_ADDR
+            value: "$(POSTGRESSVC_SERVICE_HOST)"
+          - name: POSTGRES_PORT
+            value: "$(POSTGRESSVC_PORT_5432_TCP_PORT)"
+          - name: POSTGRES_DATABASE
+            value: "postgres"
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://$(POSTGRESSVC_SERVICE_HOST):POSTGRESSVC_PORT_5432_TCP_PORT/postgres?currentSchema=public"
+          - name: DB_ADDR
+            value: postgres-keycloak
+      imagePullSecrets:
+        - name: myregistrykey
+
+
+

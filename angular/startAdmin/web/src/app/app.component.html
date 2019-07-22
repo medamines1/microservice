@@ -1,0 +1,14 @@
+<div class="container-scroller">
+  <app-navbar *ngIf="url != '/login' && url != '/register'"></app-navbar>
+  <div class="container-fluid page-body-wrapper">
+    <app-mysidebar *ngIf="url != '/login' && url != '/register'"></app-mysidebar>
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer *ngIf="url != '/login' && url != '/register'"></app-footer>
+
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+.border-primary {
+    border-color: #6837d8 !important;
+}
+
+.colorPurple{
+    color: #6837d8 !important;
+}
+
+:host ::ng-deep  .ng2-smart-title a {
+    color: #6837d8 !important;
+}
+
+:host ::ng-deep .ng-pristine {
+    border-color: #6837d847 !important;
+    font-family: fantasy;
+}
+
+
+:host ::ng-deep .ng2-smart-action{
+    color: #6837d8 !important;
+    font-family: fantasy;
+}
+
+
+:host ::ng-deep  span.menu-title{
+    color: red!important;
+}
+
+
+
+:host ::ng-deep  a.ng2-smart-action.ng2-smart-action-delete-delete {
+    display: none!important;
+}

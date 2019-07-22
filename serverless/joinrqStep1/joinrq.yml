@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://10.20.0.170:31113
+functions:
+  joinrq:
+    lang: java8
+    handler: ./joinrq
+    image: proxymicros/angular:joinqr
+    secrets:    
+      - dockerhub    
+ 

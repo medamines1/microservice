@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layouts/template.xhtml">
+
+    <ui:define name="title">CashI</ui:define>
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            //<![CDATA[
+            function skinBar() {
+                this.cfg.shadow = false;
+                this.cfg.title = '';
+                this.cfg.seriesColors = ['#3984b8', '#7e8dcd'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#ffffff',
+                    gridLineColor: '#dee4e9',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    borderWidth: 0.1,
+                    borderColor: 'dce2e7',
+                    rendererOptions: {
+                        textColor: '#757575'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    lineWidth: 1,
+                    renderer: $.jqplot.BarRenderer,
+                    markerOptions: {
+                        shadow: false,
+                        size: 7,
+                        style: 'circle'
+                    }
+                }
+            }
+
+            //]]>
+        </script>
+        <style type="text/css">
+            .main-content {
+                padding: 0;
+            }
+
+            body .ui-splitbutton.ui-buttonset .ui-button,
+            body .ui-splitbutton.ui-buttonset .ui-button :active,
+            body .ui-splitbutton.ui-buttonset .ui-button :visited,
+            body .ui-splitbutton.ui-buttonset .ui-button :hover {
+                color: white;
+                background-color: #4ca1af;
+                border: none;
+            }
+
+            .ui-growl-title {
+                color: white;
+            }
+
+            body .ui-state-active, body .ui-state-highlight {
+                background-color: #4ba1af;
+                color: #ffffff;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+
+
+        <style type="text/css">
+            .ui-paginator a {
+                margin-right: 5px;
+            }
+        </style>
+
+        <p:growl id="messages"/>
+
+        <h2 style="color: #4ba1af;">Cash Out</h2>
+
+        <h:form>
+            <p:dataTable id="tbl" var="data" value="#{CashOutExpo.data}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                         paginator="true" rows="10" style="margin-bottom:20px">
+
+                <f:facet name="{Exporters}">
+                    <div style="float:right;padding-top: 5px;">
+
+                    </div>
+                </f:facet>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Id"/>
+                    </f:facet>
+                    <h:outputText value="#{data.id}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="merchant_id"/>
+                    </f:facet>
+                    <h:outputText value="#{data.merchant_id}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="amount"/>
+                    </f:facet>
+                    <h:outputText value="#{data.amount}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="created_on"/>
+                    </f:facet>
+                    <h:outputText value="#{data.created_on}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="status"/>
+                    </f:facet>
+                    <h:outputText value="#{data.status}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="action"/>
+                    </f:facet>
+
+                    <p:splitButton id="perform" value="perform" rendered="#{ data.status eq 'Pending'}"
+                                   action="#{ButtonHandlerCashoutTable.perform(data,'perform')}" update="messages"
+                                   icon="pi pi-delete">
+                        <p:menuitem id="delete" value="delete" rendered="#{ data.status eq 'Pending'}"
+                                    action="#{ButtonHandlerCashoutTable.perform(data,'delete')}" update="messages"
+                                    icon="pi pi-delete">
+                        </p:menuitem>
+                    </p:splitButton>
+
+
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>

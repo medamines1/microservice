@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	<script language="JAVASCRIPT">
+		function update() {
+			// 			window.location.reload();
+			//alert('fieldName')
+			// document.getElementById("myCheck").checked = true;
+			document.getElementsByName("test").checked = false;
+			;
+		}
+	</script>
+</h:head>
+<h:body>
+
+	<ui:composition template="/layouts/adminLayout.xhtml">
+		<ui:define name="content">
+			<section id="main-content">
+				<section class="wrapper">
+					<h:form id="form">
+						<p:growl id="msgs" showDetail="true" />
+						<p:spacer height="30px;" />
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+						<p:panel header="Add New Role">
+
+							<h:panelGrid id="grid" columns="3" cellpadding="10">
+								<h:outputLabel for="name" value="Role Name:"
+									style="font-weight:bold; margin-bottom:10px" />
+								<p:inputText id="name"
+									value="#{roleManagementController.role.name}" required="true"
+									label="Name" style="margin-bottom:10px" />
+								<p:message for="name" style="margin-bottom:10px" />
+
+								<h:outputLabel for="designation" value="Role Designation:"
+									style="font-weight:bold" />
+								<p:inputTextarea id="designation"
+									value="#{roleManagementController.role.designation}"
+									required="true" label="Designation" />
+								<p:message for="designation" />
+							</h:panelGrid>
+							<p:commandButton value="Add Role" id="add" update="grid, msgs"
+								actionListener="#{roleManagementController.save}"
+								validateClient="true" styleClass="ui-priority-primary"
+								style="margin-right:10px; margin-top:10px"
+								onstart="PF('statusDialog').show()"
+								onsuccess="PF('statusDialog').hide()" />
+							<p:commandButton
+								actionListener="#{roleManagementController.redirectToRoleManagementPage()}"
+								id="cancel" 
+								icon="ui-icon-close" value="Cancel" style="width: 100px; margin-top: 20px;" />
+							<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+								closable="false" resizable="false" showHeader="false">
+								<p:graphicImage name="images/ajaxloadingbar.gif" />
+							</p:dialog>
+
+
+						</p:panel>
+					</h:form>
+				</section>
+			</section>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

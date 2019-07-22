@@ -1,0 +1,22 @@
+<div class="jumbotron jumbotron-fluid" >
+        <div class="container">
+            <h1 class="display-4">User and categories management</h1><br>
+
+
+            <h4 class="display-5">Select categorie </h4>
+
+
+            <div _ngcontent-lsq-c6="" class="form-group">
+                <select  (change)="selectChangeHandler($event)" _ngcontent-lsq-c6="" class="form-control border-primary" id="exampleSelectPrimary">
+                    <option _ngcontent-lsq-c6="">select category</option>
+                    <option *ngFor="let categ of categList" _ngcontent-lsq-c6="" value="{{categ.id}}">{{categ.name}}</option>
+            </select>
+            <br>
+            <br>
+            <div class="form-group">
+                 <button class="btn btn-info btn-fw" type="button"  (click) ="setUserTable()"  >get users</button>
+                </div>
+        </div>
+<br>
+<br>
+<ng2-smart-table [settings]="settings" [source]="source" (custom)="MyCustom($event)" (editConfirm)="Save($event)" ></ng2-smart-table>

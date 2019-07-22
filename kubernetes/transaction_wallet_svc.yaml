@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transaction-wallet-microservice-service
+  labels:
+    run: transaction-wallet-microservice-service
+spec:
+  type: NodePort
+  ports:
+  - port: 8083
+  externalIPs:
+    - 10.20.0.170
+  selector:
+    app : transaction-wallet-microservice

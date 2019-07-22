@@ -1,0 +1,63 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item nav-profile">
+      <div class="nav-link">
+        <div class="user-wrapper">
+          <div class="profile-image">
+            <img src="assets/images/faces/face1.jpg" alt="profile image">
+          </div>
+          <div class="text-wrapper">
+            <p class="profile-name">Richard V.Welsh</p>
+            <div>
+              <small class="designation text-muted">SuperUser</small>
+              <span class="status-indicator online"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link blue" routerLink="/dashboard" routerLinkActive="active">
+        <i class="menu-icon fa fa-dashboard"></i>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link red" routerLink="/profile" routerLinkActive="active">
+          <i class="menu-icon  fa fa-address-card"></i>
+          <span class="menu-title">Profile</span>
+        </a>
+      </li>
+
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Curriculum <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#formazione" id="top-link" class="skel-layers-ignoreHref">Formazione</a></li>
+          <li><a href="#stage" id="top-link" class="skel-layers-ignoreHref">Stage</a></li>
+          <li><a href="#insegnante" id="top-link" class="skel-layers-ignoreHref">Insegnante Hip Hop</a></li>
+          <li><a href="#danzatore" id="top-link" class="skel-layers-ignoreHref">Danzatore</a></li>
+          <li><a href="#coreografie" id="top-link" class="skel-layers-ignoreHref">Coreografie</a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link purple" routerLink="/employee" routerLinkActive="active">
+            <i class="menu-icon  fa fa-users"></i>
+            <span class="menu-title">Employee and categories</span>
+            <ul class="nav">
+              <li class="nav-item">Item 3a</li>
+              <li class="nav-item">Item 3b</li>
+          </ul>
+          </a>
+        </li>
+
+        <li class="nav-item green">
+            <a class="nav-link green" routerLink="/settings" routerLinkActive="active">
+              <i class="menu-icon fa fa-wrench"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+
+  </ul>
+</nav>

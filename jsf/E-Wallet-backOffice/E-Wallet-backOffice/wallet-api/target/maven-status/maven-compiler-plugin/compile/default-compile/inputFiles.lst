@@ -1,0 +1,14 @@
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/controller/configuration/GuestPreferences.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/SuccessAuthHandler.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/controller/LoginController.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/BoApplicationAttributes.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/ManagedBean/EditInputValidator.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/SecurityConfig.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/WalletBackOfficeApplication.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/SystemInfoLocalThreadHolder.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/SpringMvcConfiguration.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/ManagedBean/AddInputValidator.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/exception/AccessDeniedException.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/ManagedBean/DecodeBase64.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/Utils.java
+/home/med/repos/e-wallet/jsf/E-Wallet-backOffice/E-Wallet-backOffice/wallet-api/src/main/java/com/proxym/api/UserInfoThread.java
